@@ -120,13 +120,17 @@ export async function sendNewTurnNotification(gameData: string) {
         ],
       },
     ],
-  }).catch(err => {
-    console.error('TurnNotifier: error sending notification', {
-      gameId,
-      playerId,
-      currentPlayer,
-      dmChannel: playerProfile.dmChannel,
+  })
+    .then(res => {
+      console.log('TurnNotifier: notification sent', res);
+    })
+    .catch(err => {
+      console.error('TurnNotifier: error sending notification', {
+        gameId,
+        playerId,
+        currentPlayer,
+        dmChannel: playerProfile.dmChannel,
+      });
+      console.error(err);
     });
-    console.error(err);
-  });
 }

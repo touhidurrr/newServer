@@ -24,7 +24,7 @@ export const putFile = (app: Elysia) =>
           { $set: { timestamp: Date.now(), text: body as string } },
           { upsert: true }
         ).catch(err => {
-          console.error(`Err updating ${gameId} on MongoDB`);
+          console.error(`MongoDB: Error saving game ${gameId}`);
           console.error(err);
         });
 
