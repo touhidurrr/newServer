@@ -1,0 +1,8 @@
+*.js
+*.md
+*.html
+public/
+node_modules/
+bun.lockb
+yarn.lock
+package-lock.json
