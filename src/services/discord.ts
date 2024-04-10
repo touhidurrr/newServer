@@ -48,8 +48,8 @@ export async function sendNewTurnNotification(gameData: string) {
     { projection: { notifications: 1, dmChannel: 1 } }
   ).catch(console.error);
 
-  // If the player doesn't exist in the DB, return
-  if (!playerProfile) return;
+  // if player has not registered or has disabled notifications, return
+  if (!playerProfile || playerProfile.notifications !== 'enabled') return;
 
   // If the player doesn't have a DM channel, create one
   if (!playerProfile.dmChannel) {
@@ -81,7 +81,6 @@ export async function sendNewTurnNotification(gameData: string) {
     { projection: { _id: 0, name: 1 } }
   ).then(game => game?.name);
 
-  if (!playerProfile.dmChannel || playerProfile.notifications !== 'enabled') return;
   await createMessage(playerProfile.dmChannel, {
     embeds: [
       {
