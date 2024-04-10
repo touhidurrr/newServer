@@ -8,7 +8,6 @@ const hostname = process.env.HOST ?? '0.0.0.0';
 const app = new Elysia()
   .onRequest(({ request }) => {
     console.info(`${request.method} ${request.url}`);
-    console.info(`Headers: `, request.headers);
   })
   .use(staticPlugin({ prefix: '/' }))
   .get('/isalive', true)
