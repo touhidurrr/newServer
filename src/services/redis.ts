@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
+import { DEFAULT_REDIS_URL } from '@constants';
 
-const DEFAULT_REDIS_URL = '0.0.0.0:6379';
 const REDIS_URL = process.env.REDISCLOUD_URL || process.env.REDIS_URL || DEFAULT_REDIS_URL;
 
 const redis = new Redis(REDIS_URL);
