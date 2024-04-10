@@ -16,7 +16,7 @@ console.log({ isDiscordTokenValid, DISCORD_TOKEN });
 
 const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN ?? '');
 
-export async function createMessage(
+async function createMessage(
   channelId: string,
   message: RESTPostAPIChannelMessageJSONBody
 ): Promise<RESTPostAPIChannelMessageResult> {
@@ -25,7 +25,7 @@ export async function createMessage(
   }) as Promise<RESTPostAPIChannelMessageResult>;
 }
 
-export async function getDMChannel(discordId: string) {
+async function getDMChannel(discordId: string) {
   const res = (await discord.post(Routes.userChannels(), {
     body: { recipient_id: discordId },
   })) as RESTPostAPICurrentUserCreateDMChannelResult;
@@ -35,14 +35,17 @@ export async function getDMChannel(discordId: string) {
 export async function sendNewTurnNotification(gameData: string) {
   const game = parseUncivGameData(gameData);
   const { turns, gameId, civilizations, currentPlayer, gameParameters } = game;
-  console.log('Sending new turn notification for', gameId);
+  console.log('TurnNotifier: started for', gameId);
 
   // find currentPlayer's ID
   const currentCiv = civilizations.find(c => c.civName === currentPlayer);
-  if (!currentCiv?.playerId) return;
-  const { playerId } = currentCiv;
+  if (!currentCiv) {
+    console.error('TurnNotifier: currentPlayer not found', gameId);
+    return;
+  }
 
   // Check if the Player exists in DB
+  const { playerId } = currentCiv;
   const playerProfile = await db.PlayerProfiles.findOne(
     { uncivUserIds: playerId },
     { projection: { notifications: 1, dmChannel: 1 } }
@@ -58,6 +61,7 @@ export async function sendNewTurnNotification(gameData: string) {
       await db.PlayerProfiles.updateOne({ _id: playerProfile._id }, { $set: { dmChannel } });
       playerProfile.dmChannel = dmChannel;
     } catch (err) {
+      console.error('TurnNotifier: error creating DM channel for ', playerProfile.dmChannel);
       console.error(err);
       return;
     }
@@ -74,7 +78,7 @@ export async function sendNewTurnNotification(gameData: string) {
   ] as string[];
 
   // update game info on DB and return game name
-  const name: string | undefined = await db.UncivServer.findOneAndUpdate(
+  const name = await db.UncivServer.findOneAndUpdate(
     //? always save metadata to preview file
     { _id: `${gameId}_Preview` },
     { $set: { currentPlayer, playerId, turns: turns || 0, players } },
