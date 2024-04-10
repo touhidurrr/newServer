@@ -12,6 +12,7 @@ import { db } from './mongodb';
 const { DISCORD_TOKEN } = process.env;
 
 export const isDiscordTokenValid = Boolean(DISCORD_TOKEN);
+console.log({ isDiscordTokenValid, DISCORD_TOKEN });
 
 const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN ?? '');
 
