@@ -18,9 +18,6 @@ export const putFile = (app: Elysia) =>
       // do not use any synchronous code here as it will block the response
       // this notice is only valid for this file, not for the entire project
       afterHandle: async ({ body, params: { gameId } }) => {
-        // sync with other servers
-        syncGame(gameId, body as string);
-
         // save on mongodb
         db.UncivServer.updateOne(
           { _id: gameId },
@@ -31,6 +28,10 @@ export const putFile = (app: Elysia) =>
           console.error(err);
         });
 
+        // sync with other servers
+        syncGame(gameId, body as string);
+
+        // send turn notification
         if (isDiscordTokenValid && gameId.endsWith('_Preview')) {
           sendNewTurnNotification(body as string);
         }

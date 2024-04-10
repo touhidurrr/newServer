@@ -13,7 +13,7 @@ const { DISCORD_TOKEN } = process.env;
 
 export const isDiscordTokenValid = Boolean(DISCORD_TOKEN);
 
-const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN || '');
+const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN ?? '');
 
 export async function createMessage(
   channelId: string,
@@ -34,6 +34,7 @@ export async function getDMChannel(discordId: string) {
 export async function sendNewTurnNotification(gameData: string) {
   const game = parseUncivGameData(gameData);
   const { turns, gameId, civilizations, currentPlayer, gameParameters } = game;
+  console.log('Sending new turn notification for', gameId);
 
   // find currentPlayer's ID
   const currentCiv = civilizations.find(c => c.civName === currentPlayer);
