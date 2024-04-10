@@ -1,4 +1,5 @@
-const { SYNC_TOKEN, SYNC_SERVERS } = process.env;
+const SYNC_TOKEN = process.env.SYNC_TOKEN;
+const SYNC_SERVERS = process.env.SYNC_SERVERS;
 
 const Servers = (SYNC_SERVERS ?? '').split(/[\n\s]+/);
 

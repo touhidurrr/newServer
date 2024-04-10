@@ -5,6 +5,9 @@ import { filesRoute } from '@routes/files';
 const port = process.env.PORT ?? 3000;
 const hostname = process.env.HOST ?? '0.0.0.0';
 
+console.log(process.env);
+console.log(Bun.env);
+
 const app = new Elysia()
   .onRequest(({ request }) => {
     console.info(`${request.method} ${request.url}`);

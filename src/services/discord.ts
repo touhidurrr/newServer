@@ -9,7 +9,7 @@ import {
 } from 'discord-api-types/rest/v10';
 import { db } from './mongodb';
 
-const { DISCORD_TOKEN } = process.env;
+const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 export const isDiscordTokenValid = Boolean(DISCORD_TOKEN);
 console.log({ isDiscordTokenValid, DISCORD_TOKEN });
