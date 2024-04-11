@@ -16,6 +16,9 @@ console.log({ isDiscordTokenValid, DISCORD_TOKEN });
 
 const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN ?? '');
 
+// bun fix
+discord.options.headers['Accept-Encoding'] = 'gzip, deflate';
+
 async function createMessage(
   channelId: string,
   message: RESTPostAPIChannelMessageJSONBody
