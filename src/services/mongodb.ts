@@ -46,7 +46,7 @@ const [UncivServer, PlayerProfiles, ErrorLogs] = await Promise.all([
   _db.collection<ErrorLog>('ErrorLogs'),
 ]);
 
-console.info('MongoDB: Connected.');
+console.info('[MongoDB] Connected.');
 
 export const db = {
   _db,

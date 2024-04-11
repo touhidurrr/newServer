@@ -12,15 +12,24 @@ import { db } from './mongodb';
 const DISCORD_TOKEN = process.env.DISCORD_TOKEN;
 
 export const isDiscordTokenValid = Boolean(DISCORD_TOKEN);
-console.log({ isDiscordTokenValid, DISCORD_TOKEN });
 
 const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN ?? '');
 
-// bun fix
+// bun fix no brotli support
 discord.options.headers['Accept-Encoding'] = 'gzip, deflate';
 
-// events
-discord.on('response', console.info);
+// handle some events for debug
+discord.on('invalidRequestWarning', data => {
+  console.warn(`[Discord] Invalid Request Warning:`, data);
+});
+
+discord.on('rateLimited', data => {
+  console.warn(`[Discord] Rate Limited:`, data);
+});
+
+discord.on('response', ({ path }, { status, statusText }) => {
+  console.log(`[Discord] Response on ${path}: ${status} ${statusText}`);
+});
 
 async function createMessage(
   channelId: string,
@@ -41,12 +50,11 @@ async function getDMChannel(discordId: string) {
 export async function sendNewTurnNotification(gameData: string) {
   const game = parseUncivGameData(gameData);
   const { turns, gameId, civilizations, currentPlayer, gameParameters } = game;
-  console.log('TurnNotifier: started for', gameId);
 
   // find currentPlayer's ID
   const currentCiv = civilizations.find(c => c.civName === currentPlayer);
   if (!currentCiv) {
-    console.error('TurnNotifier: currentPlayer not found', gameId);
+    console.error('[TurnNotifier] currentPlayer not found for gameId:', gameId);
     return;
   }
 
@@ -55,10 +63,7 @@ export async function sendNewTurnNotification(gameData: string) {
   const playerProfile = await db.PlayerProfiles.findOne(
     { uncivUserIds: playerId },
     { projection: { notifications: 1, dmChannel: 1 } }
-  ).catch(err => {
-    console.error('TurnNotifier: error finding player profile', { gameId, playerId });
-    console.error(err);
-  });
+  );
 
   // if player has not registered or has disabled notifications, return
   if (!playerProfile || playerProfile.notifications !== 'enabled') return;
@@ -70,7 +75,7 @@ export async function sendNewTurnNotification(gameData: string) {
       await db.PlayerProfiles.updateOne({ _id: playerProfile._id }, { $set: { dmChannel } });
       playerProfile.dmChannel = dmChannel;
     } catch (err) {
-      console.error('TurnNotifier: error creating DM channel for ', playerProfile.dmChannel);
+      console.error('[TurnNotifier] error creating DM channel for:', playerProfile);
       console.error(err);
       return;
     }
@@ -129,17 +134,13 @@ export async function sendNewTurnNotification(gameData: string) {
         ],
       },
     ],
-  })
-    .then(res => {
-      console.log('TurnNotifier: notification sent', res);
-    })
-    .catch(err => {
-      console.error('TurnNotifier: error sending notification', {
-        gameId,
-        playerId,
-        currentPlayer,
-        dmChannel: playerProfile.dmChannel,
-      });
-      console.error(err);
+  }).catch(err => {
+    console.error('[TurnNotifier] error sending notification:', {
+      gameId,
+      playerId,
+      currentPlayer,
+      dmChannel: playerProfile.dmChannel,
     });
+    console.error(err);
+  });
 }

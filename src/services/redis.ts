@@ -7,7 +7,7 @@ const redis = new Redis(REDIS_URL);
 
 await new Promise((resolve, reject) => {
   redis.on('connect', () => {
-    console.info(`Redis: Connected.`);
+    console.info(`[Redis] Connected.`);
     resolve(null);
   });
   redis.on('error', reject);
@@ -15,11 +15,11 @@ await new Promise((resolve, reject) => {
 });
 
 redis.on('error', error => {
-  console.error(`Redis:`, error);
+  console.error(`[Redis] Error:`, error);
 });
 
 redis.on('close', () => {
-  console.error(`Redis: Connection closed.`);
+  console.error(`[Redis] Connection closed.`);
 });
 
 export const cache = redis;

@@ -14,4 +14,4 @@ const app = new Elysia()
   .use(filesRoute)
   .listen({ port, hostname });
 
-console.log(`Server running at ${app.server?.url}`);
+console.log(`Server started at ${app.server?.url}`);

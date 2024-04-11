@@ -23,10 +23,7 @@ export const putFile = (app: Elysia) =>
           { _id: gameId },
           { $set: { timestamp: Date.now(), text: body as string } },
           { upsert: true }
-        ).catch(err => {
-          console.error(`MongoDB: Error saving game ${gameId}`);
-          console.error(err);
-        });
+        ).catch(err => console.error(`[MongoDB] Error saving game ${gameId}:`, err));
 
         // sync with other servers
         syncGame(gameId, body as string);
