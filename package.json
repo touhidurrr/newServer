@@ -27,7 +27,8 @@
     "start": "NODE_ENV=production bun src/index.ts",
     "lint:tsc": "tsc --noEmit",
     "lint:prettier": "prettier --check '**/?*.*'",
-    "fix:prettier": "prettier --write '**/?*.*'"
+    "fix:prettier": "prettier --write '**/?*.*'",
+    "wc": "wc src/*.ts src/*/*.ts src/*/*/*.ts"
   },
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
