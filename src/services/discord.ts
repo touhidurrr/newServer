@@ -52,7 +52,15 @@ export async function sendNewTurnNotification(gameData: string) {
   const playerProfile = await db.PlayerProfiles.findOne(
     { uncivUserIds: playerId },
     { projection: { notifications: 1, dmChannel: 1 } }
-  ).catch(console.error);
+  ).catch(err => {
+    console.error('TurnNotifier: error finding player profile', { gameId, playerId });
+    console.error(err);
+  });
+
+  console.info('TurnNotifier: debug', {
+    playerProfile,
+    bool: playerProfile?.notifications !== 'enabled',
+  });
 
   // if player has not registered or has disabled notifications, return
   if (!playerProfile || playerProfile.notifications !== 'enabled') return;
