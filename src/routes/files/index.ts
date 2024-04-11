@@ -3,7 +3,7 @@ import { getFile } from './get';
 import { patchFile } from './patch';
 import { putFile } from './put';
 
-import { GAME_ID_REGEX, MAX_FILE_SIZE, MIN_FILE_SIZE } from '../../constants';
+import { GAME_ID_REGEX, MAX_FILE_SIZE, MIN_FILE_SIZE } from '@constants';
 
 // Notes: deleteFile not imported for safety reasons
 
