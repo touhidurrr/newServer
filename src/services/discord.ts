@@ -19,6 +19,9 @@ const discord = new REST({ version: '10' }).setToken(DISCORD_TOKEN ?? '');
 // bun fix
 discord.options.headers['Accept-Encoding'] = 'gzip, deflate';
 
+// events
+discord.on('response', console.info);
+
 async function createMessage(
   channelId: string,
   message: RESTPostAPIChannelMessageJSONBody
@@ -55,11 +58,6 @@ export async function sendNewTurnNotification(gameData: string) {
   ).catch(err => {
     console.error('TurnNotifier: error finding player profile', { gameId, playerId });
     console.error(err);
-  });
-
-  console.info('TurnNotifier: debug', {
-    playerProfile,
-    bool: playerProfile?.notifications !== 'enabled',
   });
 
   // if player has not registered or has disabled notifications, return
