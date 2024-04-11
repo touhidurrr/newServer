@@ -1,6 +1,9 @@
-# dotfiles and test files
+# dotfiles and test scripts
 .*
 test*
+
+# test
+!tests/
 
 # typescript
 *.js

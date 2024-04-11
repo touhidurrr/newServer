@@ -17,3 +17,5 @@ const app = new Elysia()
   .listen({ port, hostname });
 
 console.log(`Server started at ${app.server?.url}`);
+
+export default app;
