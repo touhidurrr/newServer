@@ -7,6 +7,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
+    // elysia jsx
+    "jsx": "react",
+    "jsxFactory": "Html.createElement",
+    "jsxFragmentFactory": "Html.Fragment",
+
     // paths
     "paths": {
       "@constants": ["./src/constants"],
