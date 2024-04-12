@@ -17,7 +17,7 @@ export async function syncGame(gameId: string, body: string) {
         'Content-Length': body.length.toString(),
       },
     })
-      .then(async ({ ok, text }) => !ok && console.error('[Sync] Error:', await text()))
+      .then(async res => !res.ok && console.error('[Sync] Error:', await res.text()))
       .catch(err => console.error('[Sync] Error:', err.message));
   });
 }
