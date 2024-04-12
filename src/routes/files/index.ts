@@ -17,8 +17,8 @@ export const filesRoute = new Elysia({ prefix: '/files' }).guard(
             case 'Bad Request':
               set.status = 400;
               return message;
-            default:
-              return 'Unprocessable Entity';
+            // default:
+            //   return 'Unprocessable Entity';
           }
         }
       })

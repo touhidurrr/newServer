@@ -16,6 +16,8 @@ export async function syncGame(gameId: string, body: string) {
         'Accept-Encoding': 'gzip, deflate',
         'Content-Length': body.length.toString(),
       },
-    }).catch(console.error);
+    })
+      .then(async ({ ok, text }) => !ok && console.error('[Sync] Error:', await text()))
+      .catch(err => console.error('[Sync] Error:', err.message));
   });
 }
