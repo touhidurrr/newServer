@@ -3,7 +3,7 @@ import { START_TEST_PORT, START_TEST_TIMEOUT } from '@constants';
 
 test(
   'App Start Test',
-  async done => {
+  async () => {
     const PORT = START_TEST_PORT;
     const proc = Bun.spawn(['bun', 'start'], { env: { PORT } });
 
@@ -20,7 +20,6 @@ test(
 
     expect(proc.killed).toBe(false);
     proc.kill();
-    done();
   },
   START_TEST_TIMEOUT
 );
