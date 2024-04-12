@@ -15,6 +15,7 @@ export async function syncGame(gameId: string, body: string) {
         Authorization: `Bearer ${SYNC_TOKEN}`,
         'Accept-Encoding': 'gzip, deflate',
         'Content-Length': body.length.toString(),
+        'Content-Type': 'text/plain; charset=utf-8',
       },
     })
       .then(async res => !res.ok && console.error('[Sync] Error:', await res.text()))
