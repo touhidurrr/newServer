@@ -1,63 +1,78 @@
 import { app } from '@index';
 import { treaty } from '@elysiajs/eden';
-import { TEST_GAME_ID } from '@constants';
+import { cache } from '@services/lrucache';
 import { describe, expect, test } from 'bun:test';
+import { MAX_FILE_SIZE, TEST_GAME_ID } from '@constants';
+import { getRandomBase64String } from '@lib/getRandomBase64String';
 
 const api = treaty(app);
 
-describe('GET /isalive', async () => {
-  await api.isalive.get().then(res => {
-    expect(res.status).toBe(200);
-    expect(res.data).toBe(true);
+test('GET /isalive', async () => {
+  await api.isalive.get().then(({ status, data }) => {
+    expect(status).toBe(200);
+    expect(data).toBe(true);
   });
 });
 
 describe('GET /files', () => {
-  test('Bad ID', async () => {
+  test('Fail on Bad ID', async () => {
     await api
       .files({ gameId: 'bad-id' })
       .get()
-      .then(res => {
-        expect(res.status).toBe(422);
+      .then(({ status }) => {
+        expect(status).toBe(422);
       });
   });
 });
 
 describe('PUT /files', () => {
-  test('Small File', async () => {
+  test('Fail on Small File', async () => {
     await api
       .files({ gameId: TEST_GAME_ID })
       .put('test')
-      .then(res => {
-        expect(res.status).toBe(422);
+      .then(({ status }) => {
+        expect(status).toBe(422);
       });
   });
 
-  test('Big File', async () => {
+  test('Fail on Big File', async () => {
     await api
       .files({ gameId: TEST_GAME_ID })
-      .put('0'.repeat(1024 * 1024 + 1))
-      .then(res => {
-        expect(res.status).toBe(422);
+      .put(getRandomBase64String(MAX_FILE_SIZE))
+      .then(({ status }) => {
+        expect(status).toBe(422);
       });
   });
 
-  test('Good File', async () => {
-    await api
-      .files({ gameId: TEST_GAME_ID })
-      .put('0'.repeat(20))
-      .then(res => {
-        expect(res.status).toBe(200);
-        expect(res.data).toBe('Done!');
-      });
-  });
+  describe('Good File', () => {
+    const fileData = getRandomBase64String(100);
 
-  test('Get Good File', async () => {
-    await api
-      .files({ gameId: TEST_GAME_ID })
-      .get()
-      .then(res => {
-        expect(res.status).toBe(200);
-      });
+    test('Upload Success', async () => {
+      await api
+        .files({ gameId: TEST_GAME_ID })
+        .put(fileData)
+        .then(({ status, data }) => {
+          expect(status).toBe(200);
+          expect(data).toBeString();
+          expect(data).toBe('Done!');
+        });
+    });
+
+    test('Cache Hit', async () => {
+      const cachedFile = cache.get(TEST_GAME_ID);
+      expect(cachedFile).toBeString();
+      expect(cachedFile).toBe(fileData);
+    });
+
+    test('Can be found in GET /files', async () => {
+      await api
+        .files({ gameId: TEST_GAME_ID })
+        .get()
+        .then(({ status, data }) => {
+          expect(status).toBe(200);
+          expect(data).toBeString();
+          expect(data).toBe(fileData);
+        });
+    });
   });
 });

@@ -15,4 +15,6 @@ export const MAX_FILE_SIZE = bytes.parse('1mb');
 export const GAME_ID_REGEX = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}(_Preview)?$/;
 
 // test
+export const START_TEST_PORT = '3030';
+export const START_TEST_TIMEOUT = 20_000;
 export const TEST_GAME_ID = '00000000-0000-0000-0000-000000000000';
