@@ -12,6 +12,7 @@ export async function syncGame(gameId: string, body: string) {
       headers: {
         Authorization: `Bearer ${SYNC_TOKEN}`,
         'Accept-Encoding': 'gzip, deflate',
+        'Content-Length': body.length.toString(),
       },
     }).catch(console.error);
   });
