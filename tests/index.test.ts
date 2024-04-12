@@ -1,6 +1,7 @@
+import { app } from '@index';
 import { treaty } from '@elysiajs/eden';
+import { TEST_GAME_ID } from '@constants';
 import { describe, expect, test } from 'bun:test';
-import { app } from '../src';
 
 const api = treaty(app);
 
@@ -10,8 +11,6 @@ describe('GET /isalive', async () => {
     expect(res.data).toBe(true);
   });
 });
-
-const testId = '00000000-0000-0000-0000-000000000000';
 
 describe('GET /files', () => {
   test('Bad ID', async () => {
@@ -27,7 +26,7 @@ describe('GET /files', () => {
 describe('PUT /files', () => {
   test('Small File', async () => {
     await api
-      .files({ gameId: testId })
+      .files({ gameId: TEST_GAME_ID })
       .put('test')
       .then(res => {
         expect(res.status).toBe(422);
@@ -36,7 +35,7 @@ describe('PUT /files', () => {
 
   test('Big File', async () => {
     await api
-      .files({ gameId: testId })
+      .files({ gameId: TEST_GAME_ID })
       .put('0'.repeat(1024 * 1024 + 1))
       .then(res => {
         expect(res.status).toBe(422);
@@ -45,7 +44,7 @@ describe('PUT /files', () => {
 
   test('Good File', async () => {
     await api
-      .files({ gameId: testId })
+      .files({ gameId: TEST_GAME_ID })
       .put('0'.repeat(20))
       .then(res => {
         expect(res.status).toBe(200);
@@ -55,7 +54,7 @@ describe('PUT /files', () => {
 
   test('Get Good File', async () => {
     await api
-      .files({ gameId: testId })
+      .files({ gameId: TEST_GAME_ID })
       .get()
       .then(res => {
         expect(res.status).toBe(200);

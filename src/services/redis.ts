@@ -1,7 +1,7 @@
 import Redis from 'ioredis';
-import { DEFAULT_REDIS_URL } from '@constants';
+import { REDIS_DEFAULT_URL } from '@constants';
 
-const REDIS_URL = process.env.REDISCLOUD_URL || process.env.REDIS_URL || DEFAULT_REDIS_URL;
+const REDIS_URL = process.env.REDISCLOUD_URL || process.env.REDIS_URL || REDIS_DEFAULT_URL;
 
 const redis = new Redis(REDIS_URL);
 
