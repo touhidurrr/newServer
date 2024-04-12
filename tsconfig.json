@@ -3,7 +3,6 @@
     "lib": ["ESNext"],
     "target": "ESNext",
     "module": "ESNext",
-    "types": ["bun-types"],
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 

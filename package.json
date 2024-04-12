@@ -44,8 +44,8 @@
   },
   "devDependencies": {
     "@elysiajs/eden": "^1.0.11",
+    "@types/bun": "latest",
     "@types/bytes": "^3.1.4",
-    "bun-types": "latest",
     "discord-api-types": "^0.37.79",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5"
