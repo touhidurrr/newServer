@@ -43,6 +43,28 @@ describe('GET /files', () => {
   });
 });
 
+describe('PATCH /files', () => {
+  const fileData = getRandomBase64String(100);
+  const Authorization = `Bearer ${process.env.SYNC_TOKEN}`;
+
+  test('Upload Success', async () => {
+    await api
+      .files({ gameId: TEST_GAME_ID })
+      .patch(fileData, { headers: { Authorization } })
+      .then(({ status, data }) => {
+        expect(status).toBe(200);
+        expect(data).toBeString();
+        expect(data).toBe('Done!');
+      });
+  });
+
+  test('Cache Hit', async () => {
+    const cachedFile = await cache.get(TEST_GAME_ID);
+    expect(cachedFile).toBeString();
+    expect(cachedFile).toBe(fileData);
+  });
+});
+
 describe('PUT /files', () => {
   test('Fail on Small File', async () => {
     await api
@@ -86,7 +108,7 @@ describe('PUT /files', () => {
     });
 
     test('Cache Hit', async () => {
-      const cachedFile = cache.get(TEST_GAME_ID);
+      const cachedFile = await cache.get(TEST_GAME_ID);
       expect(cachedFile).toBeString();
       expect(cachedFile).toBe(fileData);
     });

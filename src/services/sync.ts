@@ -1,7 +1,9 @@
 const SYNC_TOKEN = process.env.SYNC_TOKEN;
 const SYNC_SERVERS = process.env.SYNC_SERVERS;
 
-const Servers = (SYNC_SERVERS ?? '').split(/[\n\s]+/);
+const Servers = (SYNC_SERVERS ?? '').split(/[\n\s]+/).filter(Boolean);
+
+console.info('[Sync] Servers:', Servers);
 
 export async function syncGame(gameId: string, body: string) {
   if (!SYNC_TOKEN || !Servers.length) return;
