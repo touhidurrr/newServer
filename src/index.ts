@@ -2,9 +2,10 @@ import { Elysia } from 'elysia';
 import { staticPlugin } from '@elysiajs/static';
 import { filesRoute } from '@routes/files';
 import { infoPlugin } from '@routes/info';
+import { DEFAULT_HOST, DEFAULT_PORT } from '@constants';
 
-const port = process.env.PORT ?? 3000;
-const hostname = process.env.HOST ?? '0.0.0.0';
+const port = process.env.PORT ?? DEFAULT_PORT;
+const hostname = process.env.HOST ?? DEFAULT_HOST;
 
 export const app = new Elysia()
   .onRequest(({ request }) => {

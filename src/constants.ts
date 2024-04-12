@@ -1,5 +1,9 @@
 import bytes from 'bytes';
 
+// server
+export const DEFAULT_PORT = '3000';
+export const DEFAULT_HOST = '0.0.0.0';
+
 // redis
 export const REDIS_DEFAULT_URL = '0.0.0.0:6379';
 
@@ -15,7 +19,6 @@ export const MAX_FILE_SIZE = bytes.parse('1mb');
 export const GAME_ID_REGEX = /^[\da-f]{8}-([\da-f]{4}-){3}[\da-f]{12}(_Preview)?$/;
 
 // test
-export const START_TEST_PORT = '3001';
 export const START_TEST_TIMEOUT = 30_000;
 export const START_TEST_FETCH_TIMEOUT = 5_000;
 export const TEST_GAME_ID = '00000000-0000-0000-0000-000000000000';
