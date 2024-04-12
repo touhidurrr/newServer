@@ -4,14 +4,15 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
     env:
       MONGO_URL: ${{ secrets.MONGO_URL }}
       DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-
-    runs-on:
-      - ubuntu-latest
-      - windows-latest
-      - macos-latest
 
     steps:
       - uses: actions/checkout@v4
