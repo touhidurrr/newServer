@@ -1,0 +1,22 @@
+name: Run Tests
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+
+  test:
+
+    env:
+      MONGO_URL: ${{ secrets.MONGO_URL }}
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+
+    runs-on:
+      - ubuntu-latest
+      - windows-latest
+      - macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun test
