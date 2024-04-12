@@ -8,29 +8,15 @@ import { GAME_ID_REGEX, MAX_FILE_SIZE, MIN_FILE_SIZE } from '@constants';
 // Notes: deleteFile not imported for safety reasons
 
 export const filesRoute = new Elysia({ prefix: '/files' }).guard(
-  { params: t.Object({ gameId: t.RegExp(GAME_ID_REGEX, { error: error(400).response }) }) },
+  { params: t.Object({ gameId: t.RegExp(GAME_ID_REGEX) }) },
   app =>
-    app
-      .onError(({ set, code, body, error: { message } }) => {
-        console.log(body);
-        if (code === 'VALIDATION') {
-          switch (message) {
-            case 'Bad Request':
-              set.status = 400;
-              return message;
-            // default:
-            //   return 'Unprocessable Entity';
-          }
-        }
-      })
-      .use(getFile)
-      .guard(
-        {
-          body: t.String({
-            minLength: MIN_FILE_SIZE,
-            maxLength: MAX_FILE_SIZE,
-          }),
-        },
-        app => app.use(putFile).use(patchFile)
-      )
+    app.use(getFile).guard(
+      {
+        body: t.String({
+          minLength: MIN_FILE_SIZE,
+          maxLength: MAX_FILE_SIZE,
+        }),
+      },
+      app => app.use(putFile).use(patchFile)
+    )
 );

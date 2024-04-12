@@ -29,7 +29,7 @@ describe('GET /files', () => {
       .files({ gameId: 'bad-id' })
       .get()
       .then(({ status }) => {
-        expect(status).toBe(400);
+        expect(status).toBe(422);
       });
   });
 
@@ -71,7 +71,7 @@ describe('PUT /files', () => {
       .files({ gameId: TEST_GAME_ID })
       .put('test')
       .then(({ status }) => {
-        expect(status).toBe(422);
+        expect(status).toBe(400);
       });
   });
 
@@ -92,7 +92,7 @@ describe('PUT /files', () => {
         .files({ gameId: 'bad-id' })
         .put(fileData)
         .then(({ status }) => {
-          expect(status).toBe(400);
+          expect(status).toBe(422);
         });
     });
 
