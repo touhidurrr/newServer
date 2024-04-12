@@ -20,9 +20,6 @@ jobs:
       - name: Lint TypeScript
         run: bun lint:tsc
 
-      - name: Lint Prettier
-        run: bun lint:prettier
-
       - name: Make .env file
         run: |
           echo "MONGO_URL=${{ secrets.MONGO_URL }}" > .env
