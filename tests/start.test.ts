@@ -7,9 +7,8 @@ test(
     const PORT = START_TEST_PORT;
     const proc = Bun.spawn(['bun', 'start'], { env: { PORT } });
 
-    for (let i = 0; i < 10; ++i) {
+    while (true) {
       if (proc.killed) return;
-      await Bun.sleep(1000);
       try {
         const isAlive = await fetch(`http://localhost:${PORT}/isalive`).then(res => res.text());
         if (isAlive) {
@@ -19,6 +18,7 @@ test(
         }
       } catch {}
     }
+
     expect(proc.killed).toBe(false);
     proc.kill();
   },
