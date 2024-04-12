@@ -87,7 +87,7 @@ export async function sendNewTurnNotification(gameData: string) {
       [
         ...civilizations.map(c => c.playerId),
         ...gameParameters.players.map(p => p.playerId),
-      ].filter(id => Boolean(id))
+      ].filter(Boolean)
     ),
   ] as string[];
 
