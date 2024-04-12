@@ -1,7 +1,5 @@
-*.js
-*.md
-*.html
-public/
+*.png
+*.txt
 node_modules/
 bun.lockb
 yarn.lock
