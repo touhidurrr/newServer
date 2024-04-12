@@ -6,6 +6,7 @@ const Servers = (SYNC_SERVERS ?? '').split(/[\n\s]+/).filter(Boolean);
 console.info('[Sync] Servers:', Servers);
 
 export async function syncGame(gameId: string, body: string) {
+  console.info('[Sync] syncGame called for:', { gameId, body });
   if (!SYNC_TOKEN || !Servers.length) return;
   Servers.forEach(api => {
     fetch(`${api}/files/${gameId}`, {

@@ -1,4 +1,4 @@
-import { Elysia, error, t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { getFile } from './get';
 import { patchFile } from './patch';
 import { putFile } from './put';
