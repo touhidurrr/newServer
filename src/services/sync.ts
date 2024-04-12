@@ -6,7 +6,6 @@ const Servers = (SYNC_SERVERS ?? '').split(/[\n\s]+/).filter(Boolean);
 console.info('[Sync] Servers:', Servers);
 
 export async function syncGame(gameId: string, body: string) {
-  console.info('[Sync] syncGame called for:', { gameId, body });
   if (!SYNC_TOKEN || !Servers.length) return;
   Servers.forEach(api => {
     fetch(`${api}/files/${gameId}`, {
@@ -18,11 +17,7 @@ export async function syncGame(gameId: string, body: string) {
         'Content-Length': body.length.toString(),
       },
     })
-      .then(async res => {
-        const { status, statusText, url } = res;
-        console.info(`[Sync] info:`, { status, statusText, url });
-        if (!res.ok) console.error('[Sync] Error:', await res.text());
-      })
-      .catch(err => console.error('[Sync] Error:', err.message));
+      .then(async res => !res.ok && console.error('[Sync] Error:', await res.text()))
+      .catch(err => console.error('[Sync] Error:', err));
   });
 }

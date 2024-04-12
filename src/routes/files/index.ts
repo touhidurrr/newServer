@@ -17,6 +17,14 @@ export const filesRoute = new Elysia({ prefix: '/files' }).guard(
           maxLength: MAX_FILE_SIZE,
         }),
       },
-      app => app.use(putFile).use(patchFile)
+      app =>
+        app
+          .onError(({ code, params, headers, body }) => {
+            if (code === 'VALIDATION') {
+              console.error(`[FilesRoute] Validation error:`, { params, headers, body });
+            }
+          })
+          .use(putFile)
+          .use(patchFile)
     )
 );
