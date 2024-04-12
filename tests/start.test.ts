@@ -10,7 +10,7 @@ test(
 
     while (!proc.killed) {
       try {
-        const isAlive = await fetch(`http://}:${DEFAULT_PORT}/isalive`, {
+        const isAlive = await fetch(url, {
           signal: AbortSignal.timeout(START_TEST_FETCH_TIMEOUT),
         }).then(res => res.text());
         if (isAlive) {
