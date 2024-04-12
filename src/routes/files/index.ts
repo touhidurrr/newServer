@@ -11,7 +11,8 @@ export const filesRoute = new Elysia({ prefix: '/files' }).guard(
   { params: t.Object({ gameId: t.RegExp(GAME_ID_REGEX, { error: error(400).response }) }) },
   app =>
     app
-      .onError(({ set, code, error: { message } }) => {
+      .onError(({ set, code, body, error: { message } }) => {
+        console.log(body);
         if (code === 'VALIDATION') {
           switch (message) {
             case 'Bad Request':
