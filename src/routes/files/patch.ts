@@ -7,7 +7,6 @@ import type { Elysia } from 'elysia';
 export const patchFile = (app: Elysia) =>
   app.use(bearer()).patch('/:gameId', async ({ set, error, bearer, body, params: { gameId } }) => {
     if (!isValidBearer(bearer)) {
-      console.log({ token: process.env.SYNC_TOKEN, bearer });
       set.headers['WWW-Authenticate'] = `Bearer realm='sign', error="invalid_request"`;
       return error(401);
     }

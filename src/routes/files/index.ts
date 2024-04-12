@@ -25,12 +25,6 @@ export const filesRoute = new Elysia({ prefix: '/files' }).guard(
       .use(getFile)
       .guard(
         {
-          headers: t.Partial(
-            t.Object(
-              { 'content-length': t.Numeric({ error: error(400).response }) },
-              { error: error(400).response }
-            )
-          ),
           body: t.String({
             minLength: MIN_FILE_SIZE,
             maxLength: MAX_FILE_SIZE,
