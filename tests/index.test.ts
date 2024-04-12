@@ -1,6 +1,6 @@
 import { treaty } from '@elysiajs/eden';
 import { describe, expect, test } from 'bun:test';
-import app from '../src';
+import { app } from '../src';
 
 const api = treaty(app);
 

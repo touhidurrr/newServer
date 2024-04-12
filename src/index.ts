@@ -6,7 +6,7 @@ import { infoPlugin } from '@routes/info';
 const port = process.env.PORT ?? 3000;
 const hostname = process.env.HOST ?? '0.0.0.0';
 
-const app = new Elysia()
+export const app = new Elysia()
   .onRequest(({ request }) => {
     console.info(`${request.method} ${request.url}`);
   })
@@ -17,5 +17,3 @@ const app = new Elysia()
   .listen({ port, hostname });
 
 console.log(`Server started at ${app.server?.url}`);
-
-export default app;
