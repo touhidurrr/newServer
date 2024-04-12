@@ -1,11 +1,20 @@
 import { app } from '@index';
+import { UUID } from 'mongodb';
 import { treaty } from '@elysiajs/eden';
 import { cache } from '@services/lrucache';
 import { describe, expect, test } from 'bun:test';
 import { MAX_FILE_SIZE, TEST_GAME_ID } from '@constants';
 import { getRandomBase64String } from '@lib/getRandomBase64String';
 
-const api = treaty(app);
+const api = treaty(app, {
+  onRequest: (_path, init) => {
+    if (typeof init.body === 'string') {
+      init.headers ??= {};
+      //@ts-ignore
+      init.headers['content-length'] = init.body.length;
+    }
+  },
+});
 
 test('GET /isalive', async () => {
   await api.isalive.get().then(({ status, data }) => {
@@ -20,7 +29,16 @@ describe('GET /files', () => {
       .files({ gameId: 'bad-id' })
       .get()
       .then(({ status }) => {
-        expect(status).toBe(422);
+        expect(status).toBe(400);
+      });
+  });
+
+  test('Fail on Nonexistent ID', async () => {
+    await api
+      .files({ gameId: new UUID().toString() })
+      .get()
+      .then(({ status }) => {
+        expect(status).toBe(404);
       });
   });
 });
@@ -40,12 +58,21 @@ describe('PUT /files', () => {
       .files({ gameId: TEST_GAME_ID })
       .put(getRandomBase64String(MAX_FILE_SIZE))
       .then(({ status }) => {
-        expect(status).toBe(422);
+        expect(status).toBe(413);
       });
   });
 
   describe('Good File', () => {
     const fileData = getRandomBase64String(100);
+
+    test('Fail on Bad ID', async () => {
+      await api
+        .files({ gameId: 'bad-id' })
+        .put(fileData)
+        .then(({ status }) => {
+          expect(status).toBe(400);
+        });
+    });
 
     test('Upload Success', async () => {
       await api
