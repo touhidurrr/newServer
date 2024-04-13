@@ -26,7 +26,8 @@ jobs:
 
       - name: Make .env file
         run: |
-          echo "MONGO_URL=${{ secrets.MONGO_URL }}" > .env
+          echo "SYNC_TOKEN=$(openssl rand -base64 32)" > .env
+          echo "MONGO_URL=${{ secrets.MONGO_URL }}" >> .env
           echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" >> .env
 
       - name: Run tests
