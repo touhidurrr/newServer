@@ -29,7 +29,7 @@
     "lint:tsc": "tsc --noEmit",
     "lint:prettier": "prettier --check '**/?*.*'",
     "fix:prettier": "prettier --write '**/?*.*'",
-    "wc": "wc src/*.ts src/*/*.ts src/*/*/*.ts"
+    "wc": "find src tests -type f -exec wc {} +"
   },
   "dependencies": {
     "@discordjs/rest": "^2.2.0",
