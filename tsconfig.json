@@ -13,6 +13,7 @@
 
     // paths
     "paths": {
+      "@lib": ["./src/lib"],
       "@index": ["./src/index"],
       "@constants": ["./src/constants"],
 

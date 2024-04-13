@@ -1,5 +1,5 @@
 import bearer from '@elysiajs/bearer';
-import { isValidBearer } from '@lib/isValidBearer';
+import { isValidBearer } from '@lib';
 import { cache } from '@services/lrucache';
 import type { Elysia } from 'elysia';
 

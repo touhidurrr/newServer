@@ -1,6 +1,5 @@
 import { REST } from '@discordjs/rest';
-import { getRandomColor } from '@lib/getRandomColor';
-import { parseUncivGameData } from '@lib/parseUncivGameData';
+import { getRandomColor, parseUncivGameData } from '@lib';
 import {
   Routes,
   type RESTPostAPIChannelMessageJSONBody,

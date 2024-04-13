@@ -44,7 +44,7 @@ describe('GET /files', () => {
 });
 
 describe('PATCH /files', () => {
-  const fileData = getRandomBase64String(100);
+  const fileData = getRandomBase64String('100kb');
   const Authorization = `Bearer ${process.env.SYNC_TOKEN}`;
 
   test('Upload Success', async () => {
@@ -78,14 +78,14 @@ describe('PUT /files', () => {
   test('Fail on Big File', async () => {
     await api
       .files({ gameId: TEST_GAME_ID })
-      .put(getRandomBase64String(MAX_FILE_SIZE))
+      .put(getRandomBase64String(MAX_FILE_SIZE + 1))
       .then(({ status }) => {
         expect(status).toBe(413);
       });
   });
 
   describe('Good File', () => {
-    const fileData = getRandomBase64String(100);
+    const fileData = getRandomBase64String('100kb');
 
     test('Fail on Bad ID', async () => {
       await api

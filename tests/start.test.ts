@@ -1,12 +1,13 @@
-import { hostname } from 'node:os';
 import { expect, test } from 'bun:test';
-import { DEFAULT_PORT, START_TEST_FETCH_TIMEOUT, START_TEST_TIMEOUT } from '@constants';
+import { getAppBaseURL } from '@lib/getAppBaseURL';
+import { START_TEST_FETCH_TIMEOUT, START_TEST_TIMEOUT } from '@constants';
 
 test(
   'App Start Test',
   async () => {
     const proc = Bun.spawn(['bun', 'start']);
-    const url = `http://${hostname()}:${DEFAULT_PORT}/isalive`;
+    const baseURL = getAppBaseURL();
+    const url = `${baseURL}/isalive` as const;
 
     while (!proc.killed) {
       try {
