@@ -32,3 +32,6 @@ jobs:
 
       - name: Run tests
         run: bun test
+
+      - name: Shred data!
+        run: shred -uzn 10 .env
