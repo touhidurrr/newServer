@@ -22,7 +22,7 @@ test(
       } catch {}
     }
 
-    expect(proc.killed).toBe(false);
+    expect(proc.killed).not.toBeTrue();
     proc.kill();
   },
   START_TEST_TIMEOUT

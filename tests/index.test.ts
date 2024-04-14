@@ -1,6 +1,6 @@
 import { app } from '@index';
-import { UUID } from 'mongodb';
 import { treaty } from '@elysiajs/eden';
+import { randomUUID } from 'node:crypto';
 import { cache } from '@services/lrucache';
 import { describe, expect, test } from 'bun:test';
 import { MAX_FILE_SIZE, TEST_GAME_ID } from '@constants';
@@ -35,7 +35,7 @@ describe('GET /files', () => {
 
   test('Fail on Nonexistent ID', async () => {
     await api
-      .files({ gameId: new UUID().toString() })
+      .files({ gameId: randomUUID() })
       .get()
       .then(({ status }) => {
         expect(status).toBe(404);
